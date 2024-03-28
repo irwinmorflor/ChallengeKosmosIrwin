@@ -9,13 +9,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.challengekosmosirwin.ui.components.ListCharacters
 import com.example.challengekosmosirwin.ui.components.Loader
 import com.example.challengekosmosirwin.ui.viewModel.RickAndMortyViewModel
 import com.example.challengekosmosirwin.utilities.ResourceState
 
 @Composable
-fun HomeScreen(rickAndMortyViewModel: RickAndMortyViewModel = hiltViewModel()){
+fun HomeScreen(rickAndMortyViewModel: RickAndMortyViewModel = hiltViewModel(), navController: NavController){
 
     val charactersResponse by rickAndMortyViewModel.characters.collectAsState()
 
@@ -29,7 +30,7 @@ fun HomeScreen(rickAndMortyViewModel: RickAndMortyViewModel = hiltViewModel()){
 
             is ResourceState.Success -> {
                 val response = (charactersResponse as ResourceState.Success).data
-                ListCharacters(characters = response.results)
+                ListCharacters(characters = response.results, navController, rickAndMortyViewModel)
             }
 
             is ResourceState.Error -> {
@@ -38,10 +39,4 @@ fun HomeScreen(rickAndMortyViewModel: RickAndMortyViewModel = hiltViewModel()){
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun HomeScreenPreview(){
-    HomeScreen()
 }
